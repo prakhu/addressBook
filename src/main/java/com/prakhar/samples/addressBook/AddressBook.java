@@ -12,15 +12,16 @@ import java.io.IOException;
  */
 public class AddressBook 
 {
-
-	 boolean IsAddressBookEmpty(){
+	
+	private FileReader reader;
+	private String line = null;
+	
+	 boolean IsAddressBookEmpty(File file){
 		 boolean flag = false;
-		File file = new File("addressBook.txt");
-		FileReader reader;
+		
 		try {
 			reader = new FileReader(file);
 		BufferedReader buff = new BufferedReader(reader);
-		String line = null;
 		if ((line = buff.readLine())!=null){
 			buff.close();
 			flag = true;
@@ -36,4 +37,27 @@ public class AddressBook
 		}
 		return flag;
 	 }
+
+	public int CountMales(File file) {
+		int count = 0;
+		if(IsAddressBookEmpty(file)){
+			try {
+				reader = new FileReader(file);
+				BufferedReader buff = new BufferedReader(reader);
+				while((line = buff.readLine())!=null){
+					String values[] = line.split(",");
+					if (values.length != 3) {
+						throw new IllegalArgumentException("Address is Invalid");
+					}
+					if (values[1].contains("Male")){
+						count++;
+					}
+				}
+				return count;
+			}catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}		
+		return count;
+	}
 }
